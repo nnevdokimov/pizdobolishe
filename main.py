@@ -13,17 +13,19 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 
 keyboard = VkKeyboard(one_time=True)
 keyboard.add_button('Пить?', color=VkKeyboardColor.NEGATIVE)
-keyboard.add_button('Клавиатура', color=VkKeyboardColor.POSITIVE)
+keyboard.add_button('Выпил', color=VkKeyboardColor.NEGATIVE)
 keyboard.add_line()
-keyboard.add_location_button()
-keyboard.add_line()
-keyboard.add_vkpay_button(hash="action=transfer-to-group&group_id=183415444")
+keyboard.add_button('Статистика', color=VkKeyboardColor.POSITIVE)
+
+statistic = {}
 
 for event in longpoll.listen():
     if event.type == VkBotEventType.MESSAGE_NEW:
-        vars1 = ['Клавиатура', 'клавиатура', 'Клава', 'клава']
-        print(str(event))
-        if '[club208798128|@pizdobolishe] Клава' in str(event):
+        vars1 = ['[club208798128|@pizdobolishe] клавиатура', '[club208798128|@pizdobolishe] клава', '[club208798128|@pizdobolishe] Клавиатура', '[club208798128|@pizdobolishe] Клава']
+        # print(str(event))
+        message = event.message
+        print(event.message)
+        if event.message.text in vars1:
             if event.from_chat:
                 vk.messages.send(
                     keyboard=keyboard.get_keyboard(),
@@ -34,8 +36,8 @@ for event in longpoll.listen():
                     message='Держи',
                     chat_id=event.chat_id
                 )
-        if '[club208798128|@pizdobolishe] Пить?' in str(event):
-            answ = ['Харе бухать, алкаш', 'Все говорят, что пить нельзя, а я говорю, что буду', 'Выпей за весь наш цыгфнский табор!', 'Думаю, что сегодня не стоит']
+        if '[club208798128|@pizdobolishe] Пить?' in event.message.text:
+            answ = ['Харе бухать, алкаш', 'Все говорят, что пить нельзя, а я говорю, что буду', 'Выпей за весь наш цыганский табор!', 'Думаю, что сегодня не стоит']
             if event.from_chat:
 
                 vk.messages.send(
@@ -46,3 +48,26 @@ for event in longpoll.listen():
                     message=answ[random.randint(0, 3)],
                     chat_id=event.chat_id
                 )
+        if '[club208798128|@pizdobolishe] Выпил' in event.message.text:
+            pers_id = event.message.from_id
+            if pers_id in statistic.keys():
+                statistic[pers_id] += 1
+            else:
+                statistic[pers_id] = 1
+            vk.messages.send(
+                key=(''),
+                server=(''),
+                ts=(''),
+                random_id=get_random_id(),
+                message="Ваше здоровье, @id" + str(pers_id) + " (Алкаш)",
+                chat_id=event.chat_id
+            )
+        if '[club208798128|@pizdobolishe] Статистика' in event.message.text:
+            vk.messages.send(
+                key=(''),
+                server=(''),
+                ts=(''),
+                random_id=get_random_id(),
+                message= "Поздравляю, за этот месяц ты выпил: " + str(statistic[event.message.from_id]) + " раз",
+                chat_id=event.chat_id
+            )
