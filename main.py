@@ -3,7 +3,6 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.utils import get_random_id
 import random
 
-
 vk_session = vk_api.VkApi(token="ef398fd1e87b904c38232133a7e8a20f35e044e333549edea9574eb2af3b380b31d740bae73f906848c5a")
 
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
@@ -16,8 +15,15 @@ keyboard.add_button('Пить?', color=VkKeyboardColor.NEGATIVE)
 keyboard.add_button('Выпил', color=VkKeyboardColor.NEGATIVE)
 keyboard.add_line()
 keyboard.add_button('Статистика', color=VkKeyboardColor.POSITIVE)
+keyboard.add_line()
+keyboard.add_button('Участвовать', color=VkKeyboardColor.POSITIVE)
 
-statistic = {}
+
+
+statistic = []
+phrases = ["Первое место занимает @id", "На втором месте @id", "И тройку лидеров закрывает @id"]
+
+
 
 for event in longpoll.listen():
     if event.type == VkBotEventType.MESSAGE_NEW:
@@ -50,24 +56,64 @@ for event in longpoll.listen():
                 )
         if '[club208798128|@pizdobolishe] Выпил' in event.message.text:
             pers_id = event.message.from_id
-            if pers_id in statistic.keys():
-                statistic[pers_id] += 1
-            else:
-                statistic[pers_id] = 1
-            vk.messages.send(
-                key=(''),
-                server=(''),
-                ts=(''),
-                random_id=get_random_id(),
-                message="Ваше здоровье, @id" + str(pers_id) + " (Алкаш)",
-                chat_id=event.chat_id
-            )
+
+            count = 0
+            for i in range(0, len(statistic)):
+                if statistic[i][0] == pers_id:
+                    statistic[i] = (statistic[i][0], statistic[i][1] + 1)
+                    count = 1
+                    vk.messages.send(
+                        key=(''),
+                        server=(''),
+                        ts=(''),
+                        random_id=get_random_id(),
+                        message="Ваше здоровье, @id" + str(pers_id) + " (Алкаш)",
+                        chat_id=event.chat_id
+                    )
+                    break
+            if count != 1:
+                vk.messages.send(
+                    key=(''),
+                    server=(''),
+                    ts=(''),
+                    random_id=get_random_id(),
+                    message="Ты еще не зарегистрировался!",
+                    chat_id=event.chat_id
+                )
         if '[club208798128|@pizdobolishe] Статистика' in event.message.text:
-            vk.messages.send(
-                key=(''),
-                server=(''),
-                ts=(''),
-                random_id=get_random_id(),
-                message= "Поздравляю, за этот месяц ты выпил: " + str(statistic[event.message.from_id]) + " раз",
-                chat_id=event.chat_id
-            )
+            statistic.sort(key=lambda i:i[1],reverse=True)
+
+            for i in range(0,3):
+                print(statistic)
+                vk.messages.send(
+                    key=(''),
+                    server=(''),
+                    ts=(''),
+                    random_id=get_random_id(),
+                    message=phrases[i] + str(statistic[i][0]) + " выпив " + str(statistic[i][1]) + " раз",
+                    chat_id=event.chat_id
+                )
+        if '[club208798128|@pizdobolishe] Участвовать' in event.message.text:
+            count = 0
+            for elm in statistic:
+                if elm[0] == event.message.from_id:
+                    vk.messages.send(
+                        key=(''),
+                        server=(''),
+                        ts=(''),
+                        random_id=get_random_id(),
+                        message="Ты уже участвуешь!",
+                        chat_id=event.chat_id
+                    )
+                    count = 1
+            if count != 1:
+                pair = (event.message.from_id, 0)
+                statistic.append(pair)
+                vk.messages.send(
+                    key=(''),
+                    server=(''),
+                    ts=(''),
+                    random_id=get_random_id(),
+                    message="Добро пожаловать в наши ряды!",
+                    chat_id=event.chat_id
+                )
