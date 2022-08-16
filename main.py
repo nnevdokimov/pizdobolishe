@@ -2,6 +2,7 @@ import vk_api, vk
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.utils import get_random_id
 import random
+import sqlite3
 
 vk_session = vk_api.VkApi(token="ef398fd1e87b904c38232133a7e8a20f35e044e333549edea9574eb2af3b380b31d740bae73f906848c5a")
 
@@ -22,6 +23,16 @@ keyboard.add_button('Участвовать', color=VkKeyboardColor.POSITIVE)
 
 statistic = []
 phrases = ["Первое место занимает @id", "На втором месте @id", "И тройку лидеров закрывает @id"]
+
+# DataBase
+conn = sqlite3.connect('PizdDb.db', check_same_thread=False)
+cur = conn.cursor()
+
+def db_table_val(time: int, user_id: str, count: id):
+    cur.execute("INSERT INTO counter (time, user_id, count) VALUES (?, ?, ?)", (time, user_id, count))
+    conn.commit()
+
+
 
 
 
@@ -58,20 +69,11 @@ for event in longpoll.listen():
             pers_id = event.message.from_id
 
             count = 0
-            for i in range(0, len(statistic)):
-                if statistic[i][0] == pers_id:
-                    statistic[i] = (statistic[i][0], statistic[i][1] + 1)
-                    count = 1
-                    vk.messages.send(
-                        key=(''),
-                        server=(''),
-                        ts=(''),
-                        random_id=get_random_id(),
-                        message="Ваше здоровье, @id" + str(pers_id) + " (Алкаш)",
-                        chat_id=event.chat_id
-                    )
-                    break
-            if count != 1:
+            cur.execute("SELECT user_id FROM counter WHERE user_id = ?;",
+                           [str(pers_id)])
+            user = cur.fetchone()  # None или кортеж с данными
+
+            if user is None:
                 vk.messages.send(
                     key=(''),
                     server=(''),
@@ -80,40 +82,61 @@ for event in longpoll.listen():
                     message="Ты еще не зарегистрировался!",
                     chat_id=event.chat_id
                 )
-        if '[club208798128|@pizdobolishe] Статистика' in event.message.text:
-            statistic.sort(key=lambda i:i[1],reverse=True)
+            else:
+                cur.execute("SELECT count FROM counter WHERE user_id = ?;", [str(pers_id)])
+                num = cur.fetchone()
 
-            for i in range(0,3):
-                print(statistic)
+                cur.execute("UPDATE counter SET count = ? WHERE user_id = ?;",
+                               [num[0] + 1, str(pers_id)])
+                conn.commit()
                 vk.messages.send(
                     key=(''),
                     server=(''),
                     ts=(''),
                     random_id=get_random_id(),
-                    message=phrases[i] + str(statistic[i][0]) + " выпив " + str(statistic[i][1]) + " раз",
+                    message="Ваше здоровье, @id" + str(pers_id) + " (Алкаш)",
+                    chat_id=event.chat_id
+                )
+
+        if '[club208798128|@pizdobolishe] Статистика' in event.message.text:
+            cur.execute("SELECT user_id, count FROM counter ORDER BY count DESC;")
+            results = cur.fetchmany(3)
+            conn.commit()
+
+            print(results)
+            for i in range(0,3):
+                vk.messages.send(
+                    key=(''),
+                    server=(''),
+                    ts=(''),
+                    random_id=get_random_id(),
+                    message=phrases[i] + str(results[i][0]) + " выпив " + str(results[i][1]) + " раз",
                     chat_id=event.chat_id
                 )
         if '[club208798128|@pizdobolishe] Участвовать' in event.message.text:
-            count = 0
-            for elm in statistic:
-                if elm[0] == event.message.from_id:
-                    vk.messages.send(
-                        key=(''),
-                        server=(''),
-                        ts=(''),
-                        random_id=get_random_id(),
-                        message="Ты уже участвуешь!",
-                        chat_id=event.chat_id
-                    )
-                    count = 1
-            if count != 1:
-                pair = (event.message.from_id, 0)
-                statistic.append(pair)
+
+            cur.execute("SELECT user_id FROM counter WHERE user_id = ?;",
+                           [str(event.message.from_id)])
+            user = cur.fetchone()  # None или кортеж с данными
+
+            if user is None:
+                db_table_val(user_id = str(event.message.from_id), count=0, time=-1)
+
                 vk.messages.send(
                     key=(''),
                     server=(''),
                     ts=(''),
                     random_id=get_random_id(),
                     message="Добро пожаловать в наши ряды!",
+                    chat_id=event.chat_id
+                )
+                conn.commit()
+            else:
+                vk.messages.send(
+                    key=(''),
+                    server=(''),
+                    ts=(''),
+                    random_id=get_random_id(),
+                    message="Ты уже участвуешь!",
                     chat_id=event.chat_id
                 )
