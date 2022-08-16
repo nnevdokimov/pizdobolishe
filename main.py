@@ -101,13 +101,19 @@ for event in longpoll.listen():
             conn.commit()
 
             print(results)
-            for i in range(0,3):
+            for i in range(0, len(results)):
+                user_get = vk.users.get(user_ids=(results[i][0]))
+                user_get = user_get[0]
+                first_name = user_get['first_name']
+                last_name = user_get['last_name']
+                full_name = " (" +first_name + " " + last_name + ")"
+
                 vk.messages.send(
-                    key=(''),
-                    server=(''),
-                    ts=(''),
+                    key='',
+                    server='',
+                    ts='',
                     random_id=get_random_id(),
-                    message=phrases[i] + str(results[i][0]) + " выпив " + str(results[i][1]) + " раз",
+                    message=phrases[i] + str(results[i][0]) + full_name + " выпив " + str(results[i][1]) + " раз",
                     chat_id=event.chat_id
                 )
         if '[club208798128|@pizdobolishe] Участвовать' in event.message.text:
