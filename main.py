@@ -32,9 +32,7 @@ DB_URI = 'postgres://venhaufbqxsuff:e5e158ad10abc8813621cc3477c4c12a07d22e82ff40
 conn = psycopg2.connect(DB_URI, sslmode='require')
 cur = conn.cursor()
 
-def db_table_val(time: int, user_id: str, count: id):
-    cur.execute("INSERT INTO counter (time, user_id, count) VALUES (?, ?, ?)", (time, user_id, count))
-    conn.commit()
+
 
 
 
