@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ddf21d0-84b8-4742-86e6-b2e844c20efa" name="Changes" comment="Entering championship system">
+    <list default="true" id="7ddf21d0-84b8-4742-86e6-b2e844c20efa" name="Changes" comment="Adding old data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
@@ -76,7 +76,8 @@
       <option name="presentableId" value="Default" />
       <updated>1660076660678</updated>
       <workItem from="1660076662879" duration="308000" />
-      <workItem from="1660076986773" duration="13958000" />
+      <workItem from="1660076986773" duration="15811000" />
+      <workItem from="1660661611358" duration="1623000" />
     </task>
     <task id="LOCAL-00001" summary="Entering championship system">
       <created>1660316703347</created>
@@ -85,7 +86,28 @@
       <option name="project" value="LOCAL" />
       <updated>1660316703347</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Adding database">
+      <created>1660654665025</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1660654665025</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Adding database">
+      <created>1660654687361</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1660654687361</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Adding old data">
+      <created>1660654890866</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1660654890866</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -101,12 +123,15 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Entering championship system" />
-    <option name="LAST_COMMIT_MESSAGE" value="Entering championship system" />
+    <MESSAGE value="Adding database" />
+    <MESSAGE value="Adding old data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding old data" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/pizdobolishe$main.coverage" NAME="main Coverage Results" MODIFIED="1660653898603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pizdobolishe$main.coverage" NAME="main Coverage Results" MODIFIED="1660663848556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -3,6 +3,8 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.utils import get_random_id
 import random
 import sqlite3
+import os
+import psycopg2
 
 vk_session = vk_api.VkApi(token="ef398fd1e87b904c38232133a7e8a20f35e044e333549edea9574eb2af3b380b31d740bae73f906848c5a")
 
@@ -24,16 +26,11 @@ keyboard.add_button('Участвовать', color=VkKeyboardColor.POSITIVE)
 statistic = []
 phrases = ["Первое место занимает @id", "На втором месте @id", "И тройку лидеров закрывает @id"]
 
-# DataBase
-conn = sqlite3.connect('PizdDb.db', check_same_thread=False)
+
+# Heroku DataBase
+DB_URI = 'postgres://venhaufbqxsuff:e5e158ad10abc8813621cc3477c4c12a07d22e82ff40d6d2a45e8a56af8d0753@ec2-100-26-39-41.compute-1.amazonaws.com:5432/df6oldn5b639fa'
+conn = psycopg2.connect(DB_URI, sslmode='require')
 cur = conn.cursor()
-
-def db_table_val(time: int, user_id: str, count: id):
-    cur.execute("INSERT INTO counter (time, user_id, count) VALUES (?, ?, ?)", (time, user_id, count))
-    conn.commit()
-
-
-
 
 
 for event in longpoll.listen():
