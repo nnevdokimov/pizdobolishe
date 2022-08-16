@@ -84,7 +84,7 @@ for event in longpoll.listen():
                     chat_id=event.chat_id
                 )
             else:
-                cur.execute(f"UPDATE counter SET count = count + 1WHERE user_id = {pers_id}")
+                cur.execute(f"UPDATE counter SET count = count + 1 WHERE user_id = {pers_id}")
                 conn.commit()
                 vk.messages.send(
                     key=(''),
@@ -116,7 +116,7 @@ for event in longpoll.listen():
             user = cur.fetchone()  # None или кортеж с данными
 
             if user is None:
-                db_table_val(user_id = str(event.message.from_id), count=0, time=-1)
+                cur.execute("INSERT INTO counter(user_id, time, count) VALUES (%s, %s, %s)", (event.message.from_id, 0, -1))
 
                 vk.messages.send(
                     key=(''),

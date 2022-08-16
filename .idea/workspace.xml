@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ddf21d0-84b8-4742-86e6-b2e844c20efa" name="Changes" comment="Adding old data">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +76,7 @@
       <updated>1660076660678</updated>
       <workItem from="1660076662879" duration="308000" />
       <workItem from="1660076986773" duration="15811000" />
-      <workItem from="1660661611358" duration="2131000" />
+      <workItem from="1660661611358" duration="2952000" />
     </task>
     <task id="LOCAL-00001" summary="Entering championship system">
       <created>1660316703347</created>
@@ -112,7 +113,21 @@
       <option name="project" value="LOCAL" />
       <updated>1660663925571</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Adding old data">
+      <created>1660664622011</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1660664622011</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Adding old data">
+      <created>1660664821579</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1660664821579</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
