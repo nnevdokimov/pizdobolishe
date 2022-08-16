@@ -32,6 +32,13 @@ DB_URI = 'postgres://venhaufbqxsuff:e5e158ad10abc8813621cc3477c4c12a07d22e82ff40
 conn = psycopg2.connect(DB_URI, sslmode='require')
 cur = conn.cursor()
 
+def db_table_val(time: int, user_id: str, count: id):
+    cur.execute("INSERT INTO counter (time, user_id, count) VALUES (?, ?, ?)", (time, user_id, count))
+    conn.commit()
+
+
+
+
 
 for event in longpoll.listen():
     if event.type == VkBotEventType.MESSAGE_NEW:
@@ -66,8 +73,7 @@ for event in longpoll.listen():
             pers_id = event.message.from_id
 
             count = 0
-            cur.execute("SELECT user_id FROM counter WHERE user_id = ?;",
-                           [str(pers_id)])
+            cur.execute(f"SELECT user_id FROM counter WHERE user_id = {pers_id}")
             user = cur.fetchone()  # None или кортеж с данными
 
             if user is None:
@@ -80,11 +86,7 @@ for event in longpoll.listen():
                     chat_id=event.chat_id
                 )
             else:
-                cur.execute("SELECT count FROM counter WHERE user_id = ?;", [str(pers_id)])
-                num = cur.fetchone()
-
-                cur.execute("UPDATE counter SET count = ? WHERE user_id = ?;",
-                               [num[0] + 1, str(pers_id)])
+                cur.execute(f"UPDATE counter SET count = count + 1WHERE user_id = {pers_id}")
                 conn.commit()
                 vk.messages.send(
                     key=(''),
@@ -96,7 +98,7 @@ for event in longpoll.listen():
                 )
 
         if '[club208798128|@pizdobolishe] Статистика' in event.message.text:
-            cur.execute("SELECT user_id, count FROM counter ORDER BY count DESC;")
+            cur.execute(f"SELECT user_id, count FROM counter ORDER BY count DESC")
             results = cur.fetchmany(3)
             conn.commit()
 
@@ -112,8 +114,7 @@ for event in longpoll.listen():
                 )
         if '[club208798128|@pizdobolishe] Участвовать' in event.message.text:
 
-            cur.execute("SELECT user_id FROM counter WHERE user_id = ?;",
-                           [str(event.message.from_id)])
+            cur.execute(f"SELECT user_id FROM counter WHERE user_id = {event.message.from_id}")
             user = cur.fetchone()  # None или кортеж с данными
 
             if user is None:
